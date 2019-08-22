@@ -1,0 +1,97 @@
+{namespace rnr=BK2K\RightsAndRoles\ViewHelper}
+<f:layout name="Default" />
+<f:section name="Content">
+
+    <style type="text/css">
+        tr.right-group-header td {
+            font-weight: bold;
+        }
+        tr.right-group-header-space {
+            border-left: 1px solid #ffffff;
+            border-right: 1px solid #ffffff;
+        }
+        tr.right-group-header-space td {
+            background: #fff;
+            border: 0 !important;
+        }
+        tr td.right-key {
+            padding-left: 20px !important;
+        }
+        tr td.right-key > img {
+            height: 16px;
+            width: 16px;
+        }
+        tr td.right-value-block {
+            padding: 0 !important;
+            width: 30px;
+            height: 30px;
+        }
+        tr td.right-value-block a {
+            display: block;
+            width: 30px;
+            height: 30px;
+            cursor: default;
+        }
+        div.tooltip div.tooltip-inner {
+            text-align: left;
+        }
+    </style>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <f:for each="{groups}" as="group">
+                    <th style="height: 200px; white-space: nowrap; padding: 0px; overflow: hidden;">
+                        <div style="transform: translate(12px, 88px) rotate(-90deg); width: 10px;">
+                            {group.title}
+                        </div>
+                    </th>
+                </f:for>
+            </tr>
+        </thead>
+        <tbody>
+            <f:for each="{rights}" as="rightsGroupValues" key="rightsGroupKey">
+                <tr class="right-group-header-space">
+                    <td colspan="99999"></td>
+                </tr>
+                <tr class="right-group-header active">
+                    <td colspan="99999">{rightsGroupKey}</td>
+                </tr>
+                <f:for each="{rightsGroupValues}" as="right">
+                    <tr>
+                        <f:if condition="{right.value} == '--div--'">
+                            <f:then>
+                                <td class="right-sub-group-header" colspan="99999"><f:format.raw>{right.icon}</f:format.raw> {right.label}</td>
+                            </f:then>
+                            <f:else>
+                                <td class="right-key"><f:format.raw>{right.icon}</f:format.raw> {right.label}</td>
+                                <f:for each="{groups}" as="group">
+                                    <rnr:rights group="{group}" groupkey="{rightsGroupKey}" groupvalue="{right.value}" as="rightExists" />
+                                    <f:if condition="{rightExists}">
+                                        <f:then>
+                                            <td class="right-value-block success">
+                                                <a href="#" data-html="true" data-toggle="tooltip" title="<strong>Inheritance:</strong><br>{rightInhertance}"></a>
+                                            </td>
+                                        </f:then>
+                                        <f:else>
+                                            <td class="right-value-block"></td>
+                                        </f:else>
+                                    </f:if>
+                                </f:for>
+                            </f:else>
+                        </f:if>
+                    </tr>
+                </f:for>
+            </f:for>
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</f:section>

@@ -1,0 +1,33 @@
+<f:layout name="Default" />
+<f:section name="Content">
+
+    <f:for each="{accessList}" as="access" key="groupid">
+        <h4>{access.title} (UID: {groupid})</h4>
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>page read</th>
+                <th>page edit</th>
+                <th>content edit</th>
+                <th>page delete</th>
+                <th>page new</th>
+                <th>Decimal representation</th>
+            </tr>
+            <f:for each="{access.pages}" as="page" key="pageid">
+                <tr>
+                    <th>{page.title} (UID: {pageid})</th>
+                    <td><f:render partial="RightsAndRoles/AccessFlag" arguments="{access: page.rights.page_read}" /></td>
+                    <td><f:render partial="RightsAndRoles/AccessFlag" arguments="{access: page.rights.page_edit}" /></td>
+                    <td><f:render partial="RightsAndRoles/AccessFlag" arguments="{access: page.rights.content_edit}" /></td>
+                    <td><f:render partial="RightsAndRoles/AccessFlag" arguments="{access: page.rights.page_delete}" /></td>
+                    <td><f:render partial="RightsAndRoles/AccessFlag" arguments="{access: page.rights.page_new}" /></td>
+                    <td>{page.rights.decimal}</td>
+                </tr>
+            </f:for>
+        </table>
+    </f:for>
+
+    <h4>RAW Configuration</h4>
+    <pre>{accessRaw}</pre>
+
+</f:section>

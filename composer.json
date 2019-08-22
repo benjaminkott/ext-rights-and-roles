@@ -1,0 +1,74 @@
+{
+    "name": "bk2k/rights-and-roles",
+    "description": "Extension for enhanced Rights and Roles",
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "TYPO3 CMS",
+        "backend",
+        "rights",
+        "roles"
+    ],
+    "homepage": "https://github.com/benjaminkott/ext-rights-and-roles",
+    "authors": [
+        {
+            "name": "Benjamin Kott",
+            "email": "info@bk2k.info",
+            "role": "Developer",
+            "homepage": "http://www.bk2k.info/"
+        },
+        {
+            "name": "TEAMWFP",
+            "email": "info@teamwfp.de",
+            "role": "Developer",
+            "homepage": "https://www.teamwfp.de/"
+        }
+    ],
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "support": {
+        "issues": "https://github.com/benjaminkott/ext-rights-and-roles/issues"
+    },
+    "require": {
+        "php": ">=7.2.0",
+        "typo3/cms-backend": "^9.5 || ^10.0 || 10.*@dev",
+        "typo3/cms-core": "^9.5 || ^10.0 || 10.*@dev"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.3.1",
+        "typo3/testing-framework": "^4.9 || ^5.0",
+        "bk2k/extension-helper": "^1.0",
+        "overtrue/phplint": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "BK2K\\RightsAndRoles\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BK2K\\RightsAndRoles\\Tests\\": "Tests"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "vendor-dir": ".build/vendor",
+        "bin-dir": ".build/bin"
+    },
+    "scripts": {
+        "cgl": [
+            "php-cs-fixer fix"
+        ],
+        "post-autoload-dump": [
+            "mkdir -p .build/public/typo3conf/ext/",
+            "[ -L .build/public/typo3conf/ext/rights_and_roles ] || ln -snvf ../../../../. .build/public/typo3conf/ext/rights_and_roles"
+        ]
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "rights_and_roles",
+            "web-dir": ".build/web",
+            "app-dir": ".build"
+        }
+    }
+}
