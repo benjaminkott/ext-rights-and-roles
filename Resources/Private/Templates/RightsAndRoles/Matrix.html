@@ -60,7 +60,7 @@
                 </tr>
                 <f:for each="{rightsGroupValues}" as="right">
                     <tr>
-                        <f:if condition="{right.value} == '--div--'">
+                        <f:if condition="{right.value as string} == '--div--'">
                             <f:then>
                                 <td class="right-sub-group-header" colspan="99999"><f:format.raw>{right.icon}</f:format.raw> {right.label}</td>
                             </f:then>
