@@ -21,6 +21,10 @@ $GLOBALS['TBE_MODULES']['_configuration']['rightsandroles'] = [
     'iconIdentifier' => 'module-rightsandroles'
 ];
 
+if (empty($_EXTKEY)) {
+    $_EXTKEY = 'rights_and_roles';
+}
+
 /**
  * Module Rights and Roles > Matrix
  */
