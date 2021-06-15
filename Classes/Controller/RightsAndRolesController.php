@@ -17,7 +17,6 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 
 class RightsAndRolesController extends ActionController
 {
@@ -55,7 +54,7 @@ class RightsAndRolesController extends ActionController
     /**
      * @param PageRepository $pageRepository
      */
-    public function injectPageRepository(PageRepository $pageRepository): void
+    public function injectPageRepository(\TYPO3\CMS\Core\Domain\Repository\PageRepository $pageRepository): void
     {
         $this->pageRepository = $pageRepository;
     }
