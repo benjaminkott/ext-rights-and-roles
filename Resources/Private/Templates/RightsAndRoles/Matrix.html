@@ -35,6 +35,11 @@
         div.tooltip div.tooltip-inner {
             text-align: left;
         }
+
+        /** This is a workaround for some Bootstrap 5 <> Core CSS issue */
+        .table>:not(caption)>*>* {
+            box-shadow: none;
+        }
     </style>
 
     <table class="table table-bordered">
@@ -55,7 +60,7 @@
                 <tr class="right-group-header-space">
                     <td colspan="99999"></td>
                 </tr>
-                <tr class="right-group-header active">
+                <tr class="right-group-header active table-active">
                     <td colspan="99999">{rightsGroupKey}</td>
                 </tr>
                 <f:for each="{rightsGroupValues}" as="right">
@@ -70,8 +75,8 @@
                                     <rnr:rights group="{group}" groupkey="{rightsGroupKey}" groupvalue="{right.value}" as="rightExists" />
                                     <f:if condition="{rightExists}">
                                         <f:then>
-                                            <td class="right-value-block success">
-                                                <a href="#" data-html="true" data-toggle="tooltip" title="<strong>Inheritance:</strong><br>{rightInhertance}"></a>
+                                            <td class="right-value-block success table-success">
+                                                <a href="#" data-html="true" data-toggle="tooltip" data-bs-html="true" data-bs-toggle="tooltip" title="<strong>Inheritance:</strong><br>{rightInhertance}"></a>
                                             </td>
                                         </f:then>
                                         <f:else>

@@ -48,6 +48,7 @@ class TcaSelectItemsInjectHelper extends TcaSelectItems
     private function getSpecialConfiguration(string $fieldName, array $fieldConfiguration): array
     {
         $result = [
+            'tableName' => 'be_groups',
             'processedTca' => [
                 'columns' => [
                     $fieldName => $fieldConfiguration
@@ -60,7 +61,11 @@ class TcaSelectItemsInjectHelper extends TcaSelectItems
             $result['systemLanguageRows'] = $languages;
         }
 
-        $result = $this->addItemsFromSpecial($result, $fieldName, []);
+        if (!empty($fieldConfiguration['config']['itemsProcFunc'])) {
+            $result = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfiguration['config']['items'] ?? []);
+        } else {
+            $result = $this->addItemsFromSpecial($result, $fieldName, []);
+        }
 
         if (count($result) > 0) {
             foreach ($result as $id => $item) {
