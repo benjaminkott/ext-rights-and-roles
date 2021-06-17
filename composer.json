@@ -31,8 +31,8 @@
     },
     "require": {
         "php": ">=7.2.0",
-        "typo3/cms-backend": "^9.5 || ^10.0 || 11.*.*@dev",
-        "typo3/cms-core": "^9.5 || ^10.0 || 11.*.*@dev"
+        "typo3/cms-backend": "^10.0 || ^11.0 || 10.*@dev || 11.*@dev",
+        "typo3/cms-core": "^10.0 || ^11.0 || 10.*@dev || 11.*@dev"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.3.1",

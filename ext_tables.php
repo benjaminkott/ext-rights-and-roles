@@ -21,20 +21,16 @@ $GLOBALS['TBE_MODULES']['_configuration']['rightsandroles'] = [
     'iconIdentifier' => 'module-rightsandroles'
 ];
 
-if (empty($_EXTKEY)) {
-    $_EXTKEY = 'rights_and_roles';
-}
-
 /**
  * Module Rights and Roles > Matrix
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'BK2K.' . $_EXTKEY,
+    'RightsAndRoles',
     'rightsandroles',
     'rightsandroles_matrix',
     'top',
     [
-        'RightsAndRoles' => 'matrix',
+        \BK2K\RightsAndRoles\Controller\RightsAndRolesController::class => 'matrix',
     ],
     [
         'access' => 'admin',
@@ -47,12 +43,12 @@ if (empty($_EXTKEY)) {
  * Module Rights and Roles > Access
  */
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'BK2K.' . $_EXTKEY,
+    'RightsAndRoles',
     'rightsandroles',
     'rightsandroles_access',
     'top',
     [
-        'RightsAndRoles' => 'access',
+        \BK2K\RightsAndRoles\Controller\RightsAndRolesController::class => 'access',
     ],
     [
         'access' => 'admin',
