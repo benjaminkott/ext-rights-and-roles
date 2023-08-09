@@ -12,67 +12,47 @@ namespace BK2K\RightsAndRoles\Controller;
 
 use BK2K\RightsAndRoles\Domain\Model\RightsAndRolesMapping;
 use BK2K\RightsAndRoles\Utility\TcaSelectItemsInjectHelper;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Extbase\Domain\Repository\BackendUserGroupRepository;
-use TYPO3\CMS\Extbase\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class RightsAndRolesController extends ActionController
 {
-    /**
-     * @var BackendUserRepository
-     */
-    protected $backendUserRepository;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
+    protected BackendUserRepository $backendUserRepository;
+    protected BackendUserGroupRepository $backendUserGroupRepository;
+    protected PageRepository $pageRepository;
 
-    /**
-     * @var BackendUserGroupRepository
-     */
-    protected $backendUserGroupRepository;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @param BackendUserRepository $backendUserRepository
-     */
-    public function injectBackendUserRepository(BackendUserRepository $backendUserRepository): void
-    {
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
+        BackendUserRepository $backendUserRepository,
+        BackendUserGroupRepository $backendUserGroupRepository,
+        PageRepository $pageRepository
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->backendUserRepository = $backendUserRepository;
-    }
-
-    /**
-     * @param BackendUserGroupRepository $backendUserGroupRepository
-     */
-    public function injectBackendUserGroupRepository(BackendUserGroupRepository $backendUserGroupRepository): void
-    {
         $this->backendUserGroupRepository = $backendUserGroupRepository;
-    }
-
-    /**
-     * @param PageRepository $pageRepository
-     */
-    public function injectPageRepository(\TYPO3\CMS\Core\Domain\Repository\PageRepository $pageRepository): void
-    {
         $this->pageRepository = $pageRepository;
     }
 
-    /**
-     * @return void
-     */
-    public function matrixAction()
+    public function matrixAction(): ResponseInterface
     {
         $this->view->assign('groups', $this->getBackendUserGroups());
         $this->view->assign('rights', $this->getRightsList());
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Renders the access actions.
-     * @return void
-     */
-    public function accessAction()
+    public function accessAction(): ResponseInterface
     {
         $accessList = [];
         $accessConfiguration = $this->getAccessConfiguration();
@@ -106,15 +86,14 @@ class RightsAndRolesController extends ActionController
 
         $this->view->assign('accessList', $accessList);
         $this->view->assign('accessRaw', $this->getRawAccessConfiguration());
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
-    /**
-     * Checks the access for given permissions.
-     * @param int $permissions the permissions from configuration
-     * @param int $permission  the requested configuration
-     * @return bool
-     */
-    private function hasAccess($permissions, $permission)
+    private function hasAccess(int $permissions, int $permission): bool
     {
         return ($permissions & $permission) == $permission;
     }
@@ -124,11 +103,7 @@ class RightsAndRolesController extends ActionController
         return $GLOBALS['TYPO3_CONF_VARS']['EXT']['page']['access'] ?? [];
     }
 
-    /**
-     * Returns the raw access configuration in yaml representation.
-     * @return string
-     */
-    private function getRawAccessConfiguration()
+    private function getRawAccessConfiguration(): string
     {
         $raw  = 'EXT:' . PHP_EOL;
         $raw .= '  pages:' . PHP_EOL;
@@ -144,10 +119,9 @@ class RightsAndRolesController extends ActionController
     }
 
     /**
-     * Returns all groups masks with [G] as groups.
      * @return RightsAndRolesMapping[]
      */
-    private function getBackendUserGroups()
+    private function getBackendUserGroups(): array
     {
         $rights = $this->getRightsList();
         $list   = [];
@@ -159,20 +133,14 @@ class RightsAndRolesController extends ActionController
     }
 
     /**
-     * Returns all groups masks with [R] as roles.
-     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup[]
+     * @return BackendUserGroup[]
      */
-    private function getBackendUserRoles()
+    private function getBackendUserRoles(): array
     {
         return $this->filterGroups('[R]');
     }
 
-    /**
-     * Filters the list of groups by filterName and in title.
-     * @param string $filterName
-     * @return array
-     */
-    private function filterGroups($filterName)
+    private function filterGroups(string $filterName): array
     {
         $list = [];
         foreach ($this->getAllBackendUserGroups() as $group) {
@@ -184,18 +152,14 @@ class RightsAndRolesController extends ActionController
     }
 
     /**
-     * Returns all backend user groups.
-     * @return \TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup[]
+     * @return BackendUserGroup[]
      */
-    private function getAllBackendUserGroups()
+    private function getAllBackendUserGroups(): array
     {
         return $this->backendUserGroupRepository->findAll()->toArray();
     }
 
-    /**
-     * @return array
-     */
-    private function getRightsList()
+    private function getRightsList(): array
     {
         $tcaSelectItem = new TcaSelectItemsInjectHelper();
         $configuration = $tcaSelectItem->getSpecialFieldsConfiguration();

@@ -68,18 +68,6 @@ class BackendUserGroupRightsHook
     }
 
     /**
-     * Logs a dev message to log if debug mode is available.
-     * @param string $message the log message
-     * @return void
-     */
-    private function devLog($message)
-    {
-        if ($this->getDebugConfiguration()) {
-            error_log($message);
-        }
-    }
-
-    /**
      * Calculates the permissions.
      * @param array $params
      * @return mixed

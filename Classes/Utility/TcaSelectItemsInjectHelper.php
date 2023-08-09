@@ -55,37 +55,38 @@ class TcaSelectItemsInjectHelper extends TcaSelectItems
                 ]
             ]
         ];
-        if ($fieldName === 'languages') {
-            $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
-            $languages = $translationProvider->getSystemLanguages();
-            $result['systemLanguageRows'] = $languages;
-        }
 
-        if (!empty($fieldConfiguration['config']['itemsProcFunc'])) {
-            $result = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfiguration['config']['items'] ?? []);
-        } else {
-            $result = $this->addItemsFromSpecial($result, $fieldName, []);
-        }
+        // if ($fieldName === 'languages') {
+        //     $translationProvider = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
+        //     $languages = $translationProvider->getSystemLanguages();
+        //     $result['systemLanguageRows'] = $languages;
+        // }
 
-        if (count($result) > 0) {
-            foreach ($result as $id => $item) {
-                $itemConfigured = [];
-                foreach ([0 => 'label', 1 => 'value', 2 => 'icon'] as $itemCounter => $itemFieldName) {
-                    if (isset($item[$itemCounter])) {
-                        $itemConfigured[$itemFieldName] = $item[$itemCounter];
-                    }
-                }
-                if (isset($itemConfigured['label'])) {
-                    if (strpos($itemConfigured['label'], 'LLL:') !== false) {
-                        $itemConfigured['label'] = LocalizationUtility::translate($itemConfigured['label'], null);
-                    }
-                }
-                if (isset($itemConfigured['icon'])) {
-                    $itemConfigured['icon'] = FormEngineUtility::getIconHtml($itemConfigured['icon']);
-                }
-                $result[$id] = $itemConfigured;
-            }
-        }
+        // if (!empty($fieldConfiguration['config']['itemsProcFunc'])) {
+        //     $result = $this->resolveItemProcessorFunction($result, $fieldName, $fieldConfiguration['config']['items'] ?? []);
+        // } else {
+        //     $result = null;
+        // }
+
+        // if (count($result) > 0) {
+        //     foreach ($result as $id => $item) {
+        //         $itemConfigured = [];
+        //         foreach ([0 => 'label', 1 => 'value', 2 => 'icon'] as $itemCounter => $itemFieldName) {
+        //             if (isset($item[$itemCounter])) {
+        //                 $itemConfigured[$itemFieldName] = $item[$itemCounter];
+        //             }
+        //         }
+        //         if (isset($itemConfigured['label'])) {
+        //             if (strpos($itemConfigured['label'], 'LLL:') !== false) {
+        //                 $itemConfigured['label'] = LocalizationUtility::translate($itemConfigured['label'], null);
+        //             }
+        //         }
+        //         if (isset($itemConfigured['icon'])) {
+        //             $itemConfigured['icon'] = FormEngineUtility::getIconHtml($itemConfigured['icon']);
+        //         }
+        //         $result[$id] = $itemConfigured;
+        //     }
+        // }
 
         return $result;
     }

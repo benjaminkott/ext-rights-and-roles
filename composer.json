@@ -1,7 +1,7 @@
 {
     "name": "bk2k/rights-and-roles",
-    "description": "Extension for enhanced Rights and Roles",
     "type": "typo3-cms-extension",
+    "description": "Extension for enhanced Rights and Roles",
     "keywords": [
         "TYPO3 CMS",
         "backend",
@@ -30,15 +30,25 @@
         "issues": "https://github.com/benjaminkott/ext-rights-and-roles/issues"
     },
     "require": {
-        "php": ">=7.2.0",
-        "typo3/cms-backend": "^10.0 || ^11.0 || 10.*@dev || 11.*@dev",
-        "typo3/cms-core": "^10.0 || ^11.0 || 10.*@dev || 11.*@dev"
+        "php": ">=7.4.0",
+        "typo3/cms-backend": "^11.5 || ^12.4",
+        "typo3/cms-beuser": "^11.5 || ^12.4",
+        "typo3/cms-core": "^11.5 || ^12.4",
+        "typo3/cms-extbase": "^11.5 || ^12.4",
+        "typo3/cms-extensionmanager": "^11.5 || ^12.4",
+        "typo3/cms-fluid": "^11.5 || ^12.4",
+        "typo3/cms-frontend": "^11.5 || ^12.4",
+        "typo3/cms-install": "^11.5 || ^12.4"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.3.1",
-        "typo3/testing-framework": "^4.9 || ^5.0",
-        "bk2k/extension-helper": "^1.0",
-        "overtrue/phplint": "^1.1"
+        "friendsofphp/php-cs-fixer": "^3.20",
+        "overtrue/phplint": "^9.0",
+        "typo3/cms-belog": "^11.5 || ^12.4",
+        "typo3/cms-felogin": "^11.5 || ^12.4",
+        "typo3/cms-filelist": "^11.5 || ^12.4",
+        "typo3/cms-info": "^11.5 || ^12.4",
+        "typo3/cms-lowlevel": "^11.5 || ^12.4",
+        "typo3/cms-tstemplate": "^11.5 || ^12.4"
     },
     "autoload": {
         "psr-4": {
@@ -51,24 +61,28 @@
         }
     },
     "config": {
+        "bin-dir": ".build/bin",
         "optimize-autoloader": true,
+        "sort-packages": true,
         "vendor-dir": ".build/vendor",
-        "bin-dir": ".build/bin"
+        "allow-plugins": {
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        }
     },
     "scripts": {
         "cgl": [
             "php-cs-fixer fix"
         ],
         "post-autoload-dump": [
-            "mkdir -p .build/public/typo3conf/ext/",
-            "[ -L .build/public/typo3conf/ext/rights_and_roles ] || ln -snvf ../../../../. .build/public/typo3conf/ext/rights_and_roles"
+            "[ -d .build/public/_assets ] || mkdir -p .build/public/typo3conf/ext/",
+            "[ -d .build/public/_assets ] || [ -L .build/public/typo3conf/ext/rights_and_roles ] || ln -snvf ../../../../. .build/public/typo3conf/ext/rights_and_roles"
         ]
     },
     "extra": {
         "typo3/cms": {
             "extension-key": "rights_and_roles",
-            "web-dir": ".build/web",
-            "app-dir": ".build"
+            "web-dir": ".build/public"
         }
     }
 }

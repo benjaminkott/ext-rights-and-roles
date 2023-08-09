@@ -10,7 +10,7 @@ declare(strict_types = 1);
 
 namespace BK2K\RightsAndRoles\Domain\Model;
 
-use TYPO3\CMS\Extbase\Domain\Model\BackendUserGroup;
+use TYPO3\CMS\Beuser\Domain\Model\BackendUserGroup;
 
 class RightsAndRolesMapping
 {
